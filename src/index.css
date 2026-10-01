@@ -1,0 +1,560 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+  
+  /* Light Theme Palette */
+  --bg-app: #eef2f7;
+  --bg-card: #f8fafc;
+  --bg-card-white: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-inset: #edf2f7;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border-subtle: rgba(255, 255, 255, 0.7);
+  --border-input: rgba(255, 255, 255, 0.5);
+
+  /* Primary Clay Themes (Light) */
+  --clay-me-bg: linear-gradient(145deg, #f0f4ff, #e3eafc);
+  --clay-me-accent: #4f46e5;
+  --clay-me-badge-bg: #e0e7ff;
+  --clay-me-badge-text: #4338ca;
+  
+  --clay-her-bg: linear-gradient(145deg, #fff1f3, #fde2e6);
+  --clay-her-accent: #e11d48;
+  --clay-her-badge-bg: #ffe4e6;
+  --clay-her-badge-text: #be123c;
+
+  /* Global Clay Radii */
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+}
+
+/* Dark Theme Palette */
+.dark {
+  --bg-app: #0d111a;
+  --bg-card: #181d2a;
+  --bg-card-white: #1e2433;
+  --bg-subtle: #141824;
+  --bg-inset: #111520;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-input: rgba(255, 255, 255, 0.08);
+
+  /* Primary Clay Themes (Dark) */
+  --clay-me-bg: linear-gradient(145deg, #181e33, #121626);
+  --clay-me-accent: #818cf8;
+  --clay-me-badge-bg: #1e274a;
+  --clay-me-badge-text: #a5b4fc;
+  
+  --clay-her-bg: linear-gradient(145deg, #2a1622, #1f1019);
+  --clay-her-accent: #fb7185;
+  --clay-her-badge-bg: #401927;
+  --clay-her-badge-text: #fda4af;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-app);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(224, 231, 255, 0.8) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(254, 226, 226, 0.8) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(243, 244, 246, 0.5) 0px, transparent 70%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.16) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.16) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(13, 17, 26, 0.7) 0px, transparent 70%);
+}
+
+/* Claymorphism Base Utility Classes */
+.clay-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: 
+    14px 14px 28px rgba(160, 175, 200, 0.28),
+    -10px -10px 24px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.9),
+    inset -3px -3px 6px rgba(160, 175, 200, 0.15);
+  border: 2px solid var(--border-subtle);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-card:hover {
+  box-shadow: 
+    16px 16px 32px rgba(160, 175, 200, 0.32),
+    -12px -12px 28px rgba(255, 255, 255, 0.98),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.95),
+    inset -3px -3px 6px rgba(160, 175, 200, 0.12);
+}
+
+.dark .clay-card {
+  box-shadow: 
+    12px 12px 24px rgba(0, 0, 0, 0.5),
+    -8px -8px 20px rgba(255, 255, 255, 0.04),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.08),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.45);
+}
+
+.dark .clay-card:hover {
+  box-shadow: 
+    14px 14px 28px rgba(0, 0, 0, 0.6),
+    -10px -10px 24px rgba(255, 255, 255, 0.06),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.1),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* "Me" Section Clay Card */
+.clay-card-me {
+  background: var(--clay-me-bg);
+  border-radius: var(--radius-xl);
+  box-shadow: 
+    16px 16px 32px rgba(120, 135, 185, 0.25),
+    -12px -12px 28px rgba(255, 255, 255, 0.95),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.85),
+    inset -4px -4px 8px rgba(99, 102, 241, 0.15);
+  border: 3px solid rgba(255, 255, 255, 0.85);
+}
+
+.dark .clay-card-me {
+  box-shadow: 
+    14px 14px 28px rgba(0, 0, 0, 0.55),
+    -8px -8px 22px rgba(99, 102, 241, 0.1),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.08),
+    inset -4px -4px 8px rgba(99, 102, 241, 0.3);
+  border: 3px solid rgba(99, 102, 241, 0.35);
+}
+
+/* "Her" Section Clay Card */
+.clay-card-her {
+  background: var(--clay-her-bg);
+  border-radius: var(--radius-xl);
+  box-shadow: 
+    16px 16px 32px rgba(210, 130, 145, 0.25),
+    -12px -12px 28px rgba(255, 255, 255, 0.95),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.85),
+    inset -4px -4px 8px rgba(244, 63, 94, 0.15);
+  border: 3px solid rgba(255, 255, 255, 0.85);
+}
+
+.dark .clay-card-her {
+  box-shadow: 
+    14px 14px 28px rgba(0, 0, 0, 0.55),
+    -8px -8px 22px rgba(244, 63, 94, 0.1),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.08),
+    inset -4px -4px 8px rgba(244, 63, 94, 0.3);
+  border: 3px solid rgba(244, 63, 94, 0.35);
+}
+
+/* Clay Inset (Depression for Inputs & Counters) */
+.clay-inset {
+  background: var(--bg-inset);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  box-shadow: 
+    inset 4px 4px 8px rgba(160, 175, 200, 0.28),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--border-input);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.clay-inset:focus-within,
+.clay-inset:focus {
+  box-shadow: 
+    inset 5px 5px 10px rgba(160, 175, 200, 0.35),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.95),
+    0 0 0 2px rgba(99, 102, 241, 0.4);
+}
+
+.dark .clay-inset {
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.6),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.03);
+}
+
+.dark .clay-inset:focus-within,
+.dark .clay-inset:focus {
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.7),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.04),
+    0 0 0 2px rgba(129, 140, 248, 0.5);
+}
+
+/* Clay Buttons */
+.clay-btn {
+  font-family: var(--font-main);
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+  text-decoration: none;
+}
+
+.clay-btn:active {
+  transform: translateY(2px) scale(0.97);
+}
+
+.clay-btn-neutral {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  box-shadow: 
+    6px 6px 14px rgba(160, 175, 200, 0.35),
+    -4px -4px 10px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 4px rgba(160, 175, 200, 0.2);
+}
+
+.clay-btn-neutral:hover {
+  background: var(--bg-card);
+}
+
+.dark .clay-btn-neutral {
+  box-shadow: 
+    5px 5px 12px rgba(0, 0, 0, 0.45),
+    -3px -3px 8px rgba(255, 255, 255, 0.04),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.08),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.dark .clay-btn-neutral:hover {
+  background: #1e2434;
+}
+
+.clay-btn-neutral:active {
+  box-shadow: 
+    inset 3px 3px 6px rgba(160, 175, 200, 0.35),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+}
+
+.dark .clay-btn-neutral:active {
+  box-shadow: 
+    inset 3px 3px 6px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+}
+
+/* Me Action Button (Blue/Indigo) */
+.clay-btn-me {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #ffffff;
+  box-shadow: 
+    6px 8px 18px rgba(79, 70, 229, 0.35),
+    -3px -3px 8px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.35),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.clay-btn-me:hover {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  box-shadow: 
+    8px 10px 22px rgba(79, 70, 229, 0.45),
+    -3px -3px 8px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.45),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dark .clay-btn-me {
+  box-shadow: 
+    6px 8px 18px rgba(0, 0, 0, 0.5),
+    -2px -2px 6px rgba(99, 102, 241, 0.2),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.25),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.clay-btn-me:active {
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.3),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.2);
+}
+
+/* Her Action Button (Rose/Coral) */
+.clay-btn-her {
+  background: linear-gradient(135deg, #fb7185, #e11d48);
+  color: #ffffff;
+  box-shadow: 
+    6px 8px 18px rgba(225, 29, 72, 0.35),
+    -3px -3px 8px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.35),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.clay-btn-her:hover {
+  background: linear-gradient(135deg, #e11d48, #be123c);
+  box-shadow: 
+    8px 10px 22px rgba(225, 29, 72, 0.45),
+    -3px -3px 8px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.45),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dark .clay-btn-her {
+  box-shadow: 
+    6px 8px 18px rgba(0, 0, 0, 0.5),
+    -2px -2px 6px rgba(244, 63, 94, 0.2),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.25),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.clay-btn-her:active {
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.3),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.2);
+}
+
+/* Clay Badge / Pill */
+.clay-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1.5px solid var(--border-subtle);
+  user-select: none;
+}
+
+.clay-badge-me {
+  background: var(--clay-me-badge-bg);
+  color: var(--clay-me-badge-text);
+  box-shadow: 
+    3px 3px 6px rgba(99, 102, 241, 0.2),
+    -2px -2px 5px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+    inset -1px -1px 2px rgba(99, 102, 241, 0.15);
+}
+
+.dark .clay-badge-me {
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.4),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.1),
+    inset -1px -1px 2px rgba(99, 102, 241, 0.3);
+}
+
+.clay-badge-her {
+  background: var(--clay-her-badge-bg);
+  color: var(--clay-her-badge-text);
+  box-shadow: 
+    3px 3px 6px rgba(244, 63, 94, 0.2),
+    -2px -2px 5px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+    inset -1px -1px 2px rgba(244, 63, 94, 0.15);
+}
+
+.dark .clay-badge-her {
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.4),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.1),
+    inset -1px -1px 2px rgba(244, 63, 94, 0.3);
+}
+
+/* Clay Checkbox */
+.clay-checkbox {
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.clay-checkbox-uncheck {
+  background: var(--bg-subtle);
+  box-shadow: 
+    inset 3px 3px 5px rgba(160, 175, 200, 0.35),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.95);
+}
+
+.dark .clay-checkbox-uncheck {
+  box-shadow: 
+    inset 3px 3px 5px rgba(0, 0, 0, 0.6),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+}
+
+.clay-checkbox-uncheck:hover {
+  filter: brightness(0.96);
+}
+
+.clay-checkbox-me-checked {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  box-shadow: 
+    3px 3px 8px rgba(79, 70, 229, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.4),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+
+.dark .clay-checkbox-me-checked {
+  box-shadow: 
+    3px 3px 8px rgba(0, 0, 0, 0.5),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.3),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.4);
+}
+
+.clay-checkbox-her-checked {
+  background: linear-gradient(135deg, #fb7185, #e11d48);
+  box-shadow: 
+    3px 3px 8px rgba(225, 29, 72, 0.4),
+    -2px -2px 6px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.4),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+
+.dark .clay-checkbox-her-checked {
+  box-shadow: 
+    3px 3px 8px rgba(0, 0, 0, 0.5),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.3),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Clay Link Tag */
+.clay-link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card-white);
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3b82f6;
+  text-decoration: none;
+  box-shadow: 
+    3px 3px 8px rgba(160, 175, 200, 0.2),
+    -2px -2px 6px rgba(255, 255, 255, 0.9),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s ease;
+  max-width: 100%;
+}
+
+.dark .clay-link-chip {
+  color: #60a5fa;
+  box-shadow: 
+    3px 3px 8px rgba(0, 0, 0, 0.4),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.08);
+}
+
+.clay-link-chip:hover {
+  color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.dark .clay-link-chip:hover {
+  color: #93c5fd;
+}
+
+/* Clay Progress Track */
+.clay-progress-track {
+  background: var(--bg-inset);
+  border-radius: 9999px;
+  height: 14px;
+  box-shadow: 
+    inset 2px 2px 5px rgba(148, 163, 184, 0.35),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-input);
+}
+
+.dark .clay-progress-track {
+  box-shadow: 
+    inset 2px 2px 5px rgba(0, 0, 0, 0.6),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.03);
+}
+
+.clay-progress-bar-me {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #818cf8, #4f46e5);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-progress-bar-her {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #fb7185, #e11d48);
+  box-shadow: 0 0 10px rgba(225, 29, 72, 0.5);
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Modal Overlay */
+.clay-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+/* Animations */
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-pop-in {
+  animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
