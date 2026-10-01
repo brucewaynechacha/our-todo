@@ -1,18 +1,20 @@
 # 🎯 Our Daily Targets • Me & Her (Telegram Channel Database)
 
-A modern, tactile daily goal tracking application built with **React JS** and styled in **Claymorphism** format. Designed for you and your friend/partner to set daily targets, keep each other accountable, attach resource links, toggle between light and dark clay themes, browse all targets chronologically by date, and **store all todos in a Telegram Channel in JSON format**.
+A modern, tactile daily goal tracking application built with **React JS** and styled in **Claymorphism** format. Designed for you and your friend/partner to set daily targets, keep each other accountable, attach resource links, toggle between light and dark clay themes, browse all targets chronologically by date, and **store/fetch all todos directly from a Telegram Channel in JSON format (Zero Local Storage for Todos)**.
 
 ---
 
 ## ✨ Features
 
-- **✈️ Telegram Channel as a Database (JSON Storage)**:
-  - Stores all targets directly in your private or public **Telegram Channel** in structured **JSON format**.
-  - **Live Action Feed**: Every time a target is created, completed, updated, or deleted, a structured JSON transaction log message is posted to the channel.
-  - **Master Database State**: Continuously maintains and updates an authoritative master JSON message pinned at the top of the channel (`OUR_TODO_DATABASE_MASTER`).
-  - **Cross-Device Sync & Realtime**: Changes made by either person automatically sync across devices by reading from the channel.
-  - **In-App Telegram Setup Dialog**: Connect or test your Bot Token and Channel ID right inside the UI without touching configuration files.
-  - **Zero-Config Local Fallback**: Works offline immediately with local storage until you connect your Telegram channel.
+- **✈️ Pure Telegram Channel Database (Zero Local Storage for Todos)**:
+  - **Always Fetches from Telegram Channel**: Todos are fetched directly from your Telegram Channel using the Telegram Bot API. Zero todos are stored in `localStorage`.
+  - **📌 Exactly 1 Message Per Day (Updated In-Place)**:
+    - The bot posts only **ONE message for the day** containing the formatted dual checklist and embedded JSON.
+    - Every action (adding, checking/completing, editing, or deleting a todo) **edits that exact message in-place** (`editMessageText`).
+    - **No spam**: The channel stays completely clean with exactly 1 live-updating message per calendar day!
+  - **Multi-Day Continuity**: Targets scheduled for the Next Day (Tomorrow) are included in the daily JSON database.
+  - **Instant 1-Click Sync**: A dedicated **"Sync"** button in the header allows fetching live updates directly from Telegram at any second.
+  - **Continuous Polling**: Automatically polls the Telegram channel pinned message in the background to keep both users in sync.
 - **Split-Screen Accountability**:
   - **Left Section**: "My Targets" (Pastel Indigo/Blue clay aesthetic).
   - **Right Section**: "Her Targets" (Pastel Rose/Coral clay aesthetic).
@@ -35,11 +37,6 @@ A modern, tactile daily goal tracking application built with **React JS** and st
 - **Link Attachment Functionality**:
   - Add links directly to any target (e.g., GitHub PRs, Figma designs, YouTube course videos, research articles, Notion pages).
   - Clean domain chip with one-click copy and safe external link opening (`target="_blank"`).
-- **Claymorphism UI**:
-  - 3D tactile marshmallow clay cards with outer soft drop-shadows and inner light/dark embossing.
-  - Squeezable clay buttons with press-down animations.
-  - Clay checkboxes with bouncy checkmarks.
-  - Clay inset input wells for comfortable typing.
 
 ---
 
@@ -58,67 +55,38 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## ✈️ Telegram Channel Database Setup (1 Minute)
+## ✈️ Connecting Your Telegram Channel
 
-### Step 1: Create a Bot via BotFather
-1. Open Telegram and search for `@BotFather`.
-2. Send `/newbot`, choose a display name and username for your bot.
-3. BotFather will provide an **HTTP API Token** (e.g., `123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ`).
-
-### Step 2: Create a Telegram Channel
-1. In Telegram, create a new Channel (e.g., `Our Daily Targets`).
-2. Add your friend/partner to the channel.
-
-### Step 3: Add Bot as Administrator
-1. In your Channel Settings &gt; **Administrators** &gt; **Add Administrator**.
-2. Search for your bot's username and add it.
-3. Grant **Post Messages**, **Edit Messages**, and **Pin Messages** permissions.
-
-### Step 4: Connect in the App
-1. In the website header, click the **"Connect Telegram"** button.
-2. Enter your **Bot Token** and **Channel Username** (e.g. `@my_targets_channel`) or Channel ID (e.g. `-1001234567890`).
-3. Click **"Save & Connect Telegram DB"**.
-4. The bot will automatically test the connection, sync existing targets in JSON format, and pin the master database message in your channel!
+1. **Create your Bot**: Message `@BotFather` on Telegram -> `/newbot` -> get your Bot Token.
+2. **Create your Channel**: Create a public or private Telegram Channel for you and your friend.
+3. **Add Bot as Admin**: In Channel Settings &gt; Administrators &gt; Add your bot with *Post Messages*, *Edit Messages*, and *Pin Messages* permissions.
+4. **Connect in App**: Click **"Connect Telegram"** in the website header, enter the Bot Token and Channel Username (`@your_channel`) or ID, and click **"Save & Connect Telegram DB"**.
 
 ---
 
-### 📦 How the Data is Stored in Telegram
+### 📦 Single Daily Message Format in Telegram
 
-1. **Master Database Message (Pinned in Channel)**:
-   ```json
-   {
-     "_db": "OUR_DAILY_TARGETS_DATABASE",
-     "updatedAt": "2026-10-01T09:35:00.000Z",
-     "total": 4,
-     "completed": 2,
-     "todos": [
-       {
-         "$id": "tg-1",
-         "title": "Complete frontend responsive layout",
-         "description": "Verify 2-column split on desktop",
-         "linkUrl": "https://github.com",
-         "linkTitle": "GitHub Repo",
-         "isCompleted": true,
-         "owner": "me",
-         "targetDate": "2026-10-01",
-         "createdAt": "2026-10-01T08:35:00.000Z"
-       }
-     ]
-   }
-   ```
+For each calendar day, there is only 1 message posted and updated in place:
 
-2. **Transaction Action Logs (Feed in Channel)**:
-   Whenever a target is created or completed, a readable JSON message is sent to the channel:
-   ```json
-   {
-     "action": "CREATE",
-     "timestamp": "2026-10-01T09:35:00.000Z",
-     "todo": {
-       "$id": "tg-1727775300",
-       "title": "New daily target",
-       "owner": "her",
-       "isCompleted": false,
-       "targetDate": "2026-10-01"
-     }
-   }
-   ```
+```
+🎯 Daily Targets • 2026-10-01
+📊 Progress: 2/3 completed (67%)
+
+👤 Me:
+✅ Complete project specs
+⏳ Review architecture
+
+👤 Her:
+✅ Design clay tokens
+
+⏭️ Next Day Plan (1):
+• Next day plan (Me)
+
+📦 Database JSON:
+{
+  "_db": "OUR_DAILY_TARGETS",
+  "date": "2026-10-01",
+  "updatedAt": "2026-10-01T15:20:00.000Z",
+  "todos": [ ... ]
+}
+```

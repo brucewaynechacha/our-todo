@@ -1,5 +1,5 @@
 import React from 'react';
-import { Send, Calendar, Award, Settings, Sparkles, Sun, Moon, ArrowRight, LayoutGrid, CalendarDays, Search, X } from 'lucide-react';
+import { Send, Calendar, Award, Settings, Sparkles, Sun, Moon, ArrowRight, LayoutGrid, CalendarDays, Search, X, RotateCw } from 'lucide-react';
 import { getTodayDateStr, getTomorrowDateStr } from '../lib/dates';
 
 export default function Header({
@@ -18,6 +18,8 @@ export default function Header({
   onSelectViewMode,
   searchQuery,
   onSearchChange,
+  isRefreshing,
+  onRefresh,
 }) {
   const total = tasks.length;
   const completed = tasks.filter((t) => t.isCompleted).length;
@@ -334,6 +336,28 @@ export default function Header({
               </>
             )}
           </button>
+
+          {/* Manual Refresh from Telegram Button */}
+          {isConnected && (
+            <button
+              type="button"
+              className="clay-btn clay-btn-neutral"
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              style={{
+                padding: '7px 11px',
+                borderRadius: '16px',
+                fontSize: '0.78rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+              }}
+              title="Fetch fresh targets directly from Telegram Channel"
+            >
+              <RotateCw size={13} style={{ animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }} />
+              <span>{isRefreshing ? 'Fetching...' : 'Sync'}</span>
+            </button>
+          )}
 
           {/* Telegram Channel DB status & settings */}
           <button

@@ -5,7 +5,7 @@ import AllTodosByDate from './components/AllTodosByDate';
 import TelegramSettingsModal from './components/TelegramSettingsModal';
 import { todoApi, isTelegramConfigured } from './lib/telegramDb';
 import { triggerTaskConfetti, triggerAllDoneCelebration } from './lib/celebrate';
-import { getTodayDateStr, getTomorrowDateStr } from './lib/dates';
+import { getTodayDateStr, getTomorrowDateStr, addDaysToDate, formatFullDisplayDate, formatDisplayDate } from './lib/dates';
 import { Heart, AlertCircle, Calendar, Search } from 'lucide-react';
 
 const OWNER_NAMES_KEY = 'our_todo_owner_names';
@@ -24,11 +24,24 @@ export default function App() {
   // Search Query
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Reactive current calendar date (auto-updates when date rolls over at midnight)
+  const [currentToday, setCurrentToday] = useState(getTodayDateStr);
+  const todayStr = currentToday;
+  const tomorrowStr = addDaysToDate(currentToday, 1);
+
   // Active Date View for Daily Board: 'today' | 'tomorrow' (default is strictly 'today')
   const [activeDateView, setActiveDateView] = useState('today');
 
-  const todayStr = getTodayDateStr();
-  const tomorrowStr = getTomorrowDateStr();
+  // Check every 15s if the local calendar date has rolled over to the next day
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const nowStr = getTodayDateStr();
+      if (nowStr !== currentToday) {
+        setCurrentToday(nowStr);
+      }
+    }, 15000);
+    return () => clearInterval(timer);
+  }, [currentToday]);
 
   // Dark Mode State
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -231,7 +244,53 @@ export default function App() {
         onSelectViewMode={setViewMode}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        isRefreshing={isLoading}
+        onRefresh={loadTasks}
       />
+
+      {/* Unconfigured Telegram Channel Prompt Banner */}
+      {!isConnected && (
+        <div
+          className="clay-card animate-pop-in"
+          style={{
+            padding: '16px 20px',
+            marginBottom: '20px',
+            background: 'rgba(0, 136, 204, 0.1)',
+            border: '2px solid rgba(0, 136, 204, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '1.2rem' }}>✈️</span>
+            <div>
+              <h4 style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                Telegram Channel Database Not Connected
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                All todos are fetched directly from your Telegram channel (no local storage). Connect your bot to start syncing!
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="clay-btn"
+            style={{
+              padding: '8px 16px',
+              fontSize: '0.8rem',
+              background: 'linear-gradient(135deg, #229ed9, #0088cc)',
+              color: '#ffffff',
+            }}
+            onClick={() => setIsSettingsOpen(true)}
+          >
+            Connect Telegram Channel
+          </button>
+        </div>
+      )}
 
       {/* Optional notification / error banner */}
       {errorMsg && (

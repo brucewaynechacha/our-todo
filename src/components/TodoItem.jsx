@@ -272,16 +272,36 @@ export default function TodoItem({ task, onToggle, onUpdate, onDelete, ownerThem
                         fontWeight: 700,
                         padding: '3px 8px',
                         borderRadius: '999px',
-                        background: isTomorrow ? 'var(--clay-her-badge-bg)' : 'var(--bg-subtle)',
-                        color: isTomorrow ? 'var(--clay-her-badge-text)' : 'var(--text-secondary)',
+                        background: task.targetDate < todayStr && !task.isCompleted
+                          ? 'rgba(245, 158, 11, 0.18)'
+                          : isTomorrow
+                          ? 'var(--clay-her-badge-bg)'
+                          : task.targetDate === todayStr
+                          ? 'var(--clay-me-badge-bg)'
+                          : 'var(--bg-subtle)',
+                        color: task.targetDate < todayStr && !task.isCompleted
+                          ? '#d97706'
+                          : isTomorrow
+                          ? 'var(--clay-her-badge-text)'
+                          : task.targetDate === todayStr
+                          ? 'var(--clay-me-badge-text)'
+                          : 'var(--text-secondary)',
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '4px',
-                        border: `1px solid ${isTomorrow ? 'rgba(244, 63, 94, 0.3)' : 'var(--border-subtle)'}`,
+                        border: `1px solid ${
+                          task.targetDate < todayStr && !task.isCompleted
+                            ? 'rgba(245, 158, 11, 0.4)'
+                            : isTomorrow
+                            ? 'rgba(244, 63, 94, 0.3)'
+                            : 'var(--border-subtle)'
+                        }`,
                       }}
                     >
                       <Calendar size={11} />
-                      {formatDisplayDate(task.targetDate)}
+                      {task.targetDate < todayStr && !task.isCompleted
+                        ? `Rolled over (${formatDisplayDate(task.targetDate)})`
+                        : formatDisplayDate(task.targetDate)}
                     </span>
                   )}
                 </div>

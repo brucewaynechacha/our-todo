@@ -38,10 +38,10 @@ export default function TelegramSettingsModal({ isOpen, onClose, onConfigSaved, 
         channelId: trimmedChannel,
       });
 
-      // Push current tasks to initialize or sync the master pinned database in Telegram
+      // Push current tasks to initialize or sync the single daily message in Telegram
       try {
-        const localTasks = (await todoApi.listTodos()).data || [];
-        await todoApi.syncFullDatabaseToTelegram(localTasks, { botToken: trimmedToken, channelId: trimmedChannel });
+        const currentTasks = (await todoApi.listTodos()).data || [];
+        await todoApi.saveDailyMessageToTelegram(currentTasks, null, { botToken: trimmedToken, channelId: trimmedChannel });
       } catch (syncErr) {
         console.warn('Initial sync notice:', syncErr);
       }
